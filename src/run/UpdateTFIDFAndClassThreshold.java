@@ -3,8 +3,10 @@ package run;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import struct.VectorItemsAndWeight;
 import util.ReadFromSQL;
 import util.SQLInit;
 import model.TFIDF;
@@ -29,7 +31,7 @@ public class UpdateTFIDFAndClassThreshold {
 			rs.last();
 			total_num = rs.getRow();
 			System.out.println(total_num);
-			TFIDF.toTFtoIDF();
+			ArrayList<VectorItemsAndWeight> viawList = TFIDF.toTFtoIDF();
 			TFIDF.toTFIDF(total_num);
 			
 			rs.beforeFirst();

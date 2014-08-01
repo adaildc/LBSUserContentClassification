@@ -20,6 +20,7 @@ import net.paoding.analysis.analyzer.PaodingAnalyzer;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 
+import struct.VectorItemsAndWeight;
 import util.ReadFromSQL;
 import util.SQLInit;
 import util.WriteToSQL;
@@ -108,7 +109,7 @@ public class TFIDF {
 		return tfmap;
 	}
 	
-	public static void toTFtoIDF() throws Exception{
+	public static ArrayList<VectorItemsAndWeight> toTFtoIDF() throws Exception{
 		//将所有记录(或者称为文件)转化成hashset形式，一个记录对应一个无重复分词的[分词_1,分词_2,...,分词_n]
 		//对所有转化后的文件进行分词统计，即整个语料库包含的无重复分词，一个记录指针i，记录一个分词在多少个文件中出现
 		//上面的过程可以通过HashMap<String,Integer>来进行统计，正是之前做过的
@@ -119,9 +120,11 @@ public class TFIDF {
 		ResultSet rs = null;
 		FileWriter writer = null;
 		BufferedWriter bw = null;
+		ArrayList<VectorItemsAndWeight> vectorItemsAndWeightList = new ArrayList<>();
 		try {
 			int total_num = 0;
 			double num = 0.0;
+			double sum = 0.0;
 			int id = 0;
 			Double idf = 0.0;
 			String sql = "select * from lbs_sample";
@@ -130,6 +133,7 @@ public class TFIDF {
 			String content = "";
 			ArrayList<String> list = new ArrayList<>();
 			HashMap<String,Double> map = new HashMap<>();
+			HashMap<String,Double> summap = new HashMap<>();
 			HashMap<String,Double> hashmap = new HashMap<>();
 			HashMap<String,Double> tfmap = new HashMap<>();
 			String tfstr = "";
@@ -145,6 +149,7 @@ public class TFIDF {
 				TokenStream ts = analyzer.tokenStream(content, reader);
 				list = Participle.displayTokenStream(ts);
 				num = list.size();
+				sum = sum + num;
 				for(int i=0;i<num;i++){
 					key = list.get(i);
 					if(map.containsKey(key)){
@@ -152,7 +157,18 @@ public class TFIDF {
 					}else{
 						map.put(key, 1.0);
 					}
+					if(summap.containsKey(key)){
+						summap.put(key, summap.get(key)+1.0);
+					}else{
+						summap.put(key, 1.0);
+					}
 				}
+				Iterator<String> viawit = summap.keySet().iterator();
+				while(viawit.hasNext()){
+					key = viawit.next();
+					vectorItemsAndWeightList.add(new VectorItemsAndWeight(key, summap.get(key)/sum));
+				}
+				
 				tfmap = getTF(map, num);
 				tfstr = mapToStr(tfmap);
 				WriteToSQL.write(sql1, conn, tfstr, id);
@@ -190,6 +206,7 @@ public class TFIDF {
 			bw.close();
 			writer.close();
 		}
+		return vectorItemsAndWeightList;
 	}
 	
 	public static HashMap<String, Double> getIDF() throws Exception{
