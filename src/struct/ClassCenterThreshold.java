@@ -7,6 +7,17 @@ public class ClassCenterThreshold {
 	private String cclass;
 	private ArrayList<Double> center;
 	private double threshold;
+	private double max;
+	
+	public ClassCenterThreshold(){
+		
+	}
+	
+	public ClassCenterThreshold(String cclass, ArrayList<Double> center, double threshold){
+		this.cclass = cclass;
+		this.center = center;
+		this.threshold = threshold;
+	}
 	
 	public String getCclass(){
 		return this.cclass;
@@ -23,6 +34,10 @@ public class ClassCenterThreshold {
 	public void setValues(String cclass, ArrayList<Double> center, double threshold){
 		this.cclass = cclass;
 		this.center = center;
+		this.threshold = threshold;
+	}
+	
+	public void setThreshold(double threshold){
 		this.threshold = threshold;
 	}
 }

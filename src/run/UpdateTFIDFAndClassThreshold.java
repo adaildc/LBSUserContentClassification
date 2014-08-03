@@ -6,9 +6,11 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import struct.ClassCenterThreshold;
 import struct.VectorItemsAndWeight;
 import util.ReadFromSQL;
 import util.SQLInit;
+import model.ClassThreshold;
 import model.TFIDF;
 
 public class UpdateTFIDFAndClassThreshold {
@@ -35,13 +37,7 @@ public class UpdateTFIDFAndClassThreshold {
 			TFIDF.toTFIDF(total_num);
 			
 			rs.beforeFirst();
-			while(rs.next()){
-				cclass = rs.getString("class");
-				content = rs.getString("user_content");
-				tfidf = rs.getString("tfidf");
-				tfidfmap = TFIDF.strToMap(tfidf);
-				
-			}
+			ArrayList<ClassCenterThreshold> centhr = ClassThreshold.getClassCenterThreshold(rs, viawList);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

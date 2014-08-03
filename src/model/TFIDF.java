@@ -163,11 +163,6 @@ public class TFIDF {
 						summap.put(key, 1.0);
 					}
 				}
-				Iterator<String> viawit = summap.keySet().iterator();
-				while(viawit.hasNext()){
-					key = viawit.next();
-					vectorItemsAndWeightList.add(new VectorItemsAndWeight(key, summap.get(key)/sum));
-				}
 				
 				tfmap = getTF(map, num);
 				tfstr = mapToStr(tfmap);
@@ -183,6 +178,11 @@ public class TFIDF {
 					}
 				}
 				map.clear();
+			}
+			Iterator<String> viawit = summap.keySet().iterator();//这里做中心点权重很有问题
+			while(viawit.hasNext()){
+				key = viawit.next();
+				vectorItemsAndWeightList.add(new VectorItemsAndWeight(key, summap.get(key)/sum));
 			}
 			
 			rs.last();

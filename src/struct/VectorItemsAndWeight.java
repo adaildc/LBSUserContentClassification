@@ -13,7 +13,7 @@ public class VectorItemsAndWeight {
 		this.weight = weight;
 	}
 	
-	public String getItems() {
+	public String getItem() {
 		return this.item;
 	}
 	
