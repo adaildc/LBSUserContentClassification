@@ -13,10 +13,11 @@ public class ClassCenterThreshold {
 		
 	}
 	
-	public ClassCenterThreshold(String cclass, ArrayList<Double> center, double threshold){
+	public ClassCenterThreshold(String cclass, ArrayList<Double> center, double threshold, double max){
 		this.cclass = cclass;
 		this.center = center;
 		this.threshold = threshold;
+		this.max = max;
 	}
 	
 	public String getCclass(){
@@ -31,10 +32,15 @@ public class ClassCenterThreshold {
 		return this.threshold;
 	}
 	
-	public void setValues(String cclass, ArrayList<Double> center, double threshold){
+	public double getMax(){
+		return this.max;
+	}
+	
+	public void setValues(String cclass, ArrayList<Double> center, double threshold, double max){
 		this.cclass = cclass;
 		this.center = center;
 		this.threshold = threshold;
+		this.max = max;
 	}
 	
 	public void setThreshold(double threshold){

@@ -20,7 +20,6 @@ import net.paoding.analysis.analyzer.PaodingAnalyzer;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 
-import struct.VectorItemsAndWeight;
 import util.ReadFromSQL;
 import util.SQLInit;
 import util.WriteToSQL;
@@ -109,7 +108,7 @@ public class TFIDF {
 		return tfmap;
 	}
 	
-	public static ArrayList<VectorItemsAndWeight> toTFtoIDF() throws Exception{
+	public static ArrayList<String> toTFtoIDF() throws Exception{
 		//将所有记录(或者称为文件)转化成hashset形式，一个记录对应一个无重复分词的[分词_1,分词_2,...,分词_n]
 		//对所有转化后的文件进行分词统计，即整个语料库包含的无重复分词，一个记录指针i，记录一个分词在多少个文件中出现
 		//上面的过程可以通过HashMap<String,Integer>来进行统计，正是之前做过的
@@ -120,7 +119,7 @@ public class TFIDF {
 		ResultSet rs = null;
 		FileWriter writer = null;
 		BufferedWriter bw = null;
-		ArrayList<VectorItemsAndWeight> vectorItemsAndWeightList = new ArrayList<>();
+		ArrayList<String> vectorItems = new ArrayList<>();
 		try {
 			int total_num = 0;
 			double num = 0.0;
@@ -133,7 +132,6 @@ public class TFIDF {
 			String content = "";
 			ArrayList<String> list = new ArrayList<>();
 			HashMap<String,Double> map = new HashMap<>();
-			HashMap<String,Double> summap = new HashMap<>();
 			HashMap<String,Double> hashmap = new HashMap<>();
 			HashMap<String,Double> tfmap = new HashMap<>();
 			String tfstr = "";
@@ -149,18 +147,12 @@ public class TFIDF {
 				TokenStream ts = analyzer.tokenStream(content, reader);
 				list = Participle.displayTokenStream(ts);
 				num = list.size();
-				sum = sum + num;
 				for(int i=0;i<num;i++){
 					key = list.get(i);
 					if(map.containsKey(key)){
 						map.put(key, map.get(key)+1.0);
 					}else{
 						map.put(key, 1.0);
-					}
-					if(summap.containsKey(key)){
-						summap.put(key, summap.get(key)+1.0);
-					}else{
-						summap.put(key, 1.0);
 					}
 				}
 				
@@ -179,11 +171,6 @@ public class TFIDF {
 				}
 				map.clear();
 			}
-			Iterator<String> viawit = summap.keySet().iterator();//这里做中心点权重很有问题
-			while(viawit.hasNext()){
-				key = viawit.next();
-				vectorItemsAndWeightList.add(new VectorItemsAndWeight(key, summap.get(key)/sum));
-			}
 			
 			rs.last();
 			total_num = rs.getRow();
@@ -194,6 +181,7 @@ public class TFIDF {
 			Iterator<String> new_it = hashmap.keySet().iterator();
 			while(new_it.hasNext()){
 				key = new_it.next();
+				vectorItems.add(key);
 				idf = Math.log(total_num/(1.0+hashmap.get(key)));
 				hashmap.put(key, idf);
 				bw.write(key + "    "+ idf+"\r\n");
@@ -206,7 +194,7 @@ public class TFIDF {
 			bw.close();
 			writer.close();
 		}
-		return vectorItemsAndWeightList;
+		return vectorItems;
 	}
 	
 	public static HashMap<String, Double> getIDF() throws Exception{

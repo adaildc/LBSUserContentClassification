@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import struct.ClassCenterThreshold;
-import struct.VectorItemsAndWeight;
 import util.ReadFromSQL;
 import util.SQLInit;
 import model.ClassThreshold;
@@ -33,7 +32,7 @@ public class UpdateTFIDFAndClassThreshold {
 			rs.last();
 			total_num = rs.getRow();
 			System.out.println(total_num);
-			ArrayList<VectorItemsAndWeight> viawList = TFIDF.toTFtoIDF();
+			ArrayList<String> viawList = TFIDF.toTFtoIDF();
 			TFIDF.toTFIDF(total_num);
 			
 			rs.beforeFirst();
