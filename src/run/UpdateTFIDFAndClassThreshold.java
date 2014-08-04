@@ -4,9 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import struct.ClassCenterThreshold;
 import util.ReadFromSQL;
 import util.SQLInit;
 import model.ClassThreshold;
@@ -19,11 +17,7 @@ public class UpdateTFIDFAndClassThreshold {
 		Connection conn = null;
 		ResultSet rs = null;
 		int total_num = 0;
-		int id = 0;
-		String cclass = "";
-		String content = "";
-		String tfidf = "";
-		HashMap<String, Double> tfidfmap = new HashMap<>();
+
 		try {
 			String sql = "select * from lbs_sample";
 			SQLInit.initParam("mysql.properties");
@@ -36,7 +30,7 @@ public class UpdateTFIDFAndClassThreshold {
 			TFIDF.toTFIDF(total_num);
 			
 			rs.beforeFirst();
-			ArrayList<ClassCenterThreshold> centhr = ClassThreshold.getClassCenterThreshold(rs, viawList);
+			ClassThreshold.getClassCenterThreshold(rs, viawList);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

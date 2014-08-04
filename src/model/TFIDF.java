@@ -10,9 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 import net.paoding.analysis.analyzer.PaodingAnalyzer;
@@ -29,7 +27,7 @@ public class TFIDF {
 		HashMap<String, Double> tf = new HashMap<>();
 		try {
 			String key = "";
-			Set keySet = map.keySet();
+			Set<String> keySet = map.keySet();
 			Iterator<String> it = keySet.iterator();
 			while(it.hasNext()){//tf
 				key = it.next();
@@ -77,7 +75,6 @@ public class TFIDF {
 	}
 	
 	public static HashMap<String, Double> tf(ResultSet rs) throws Exception{
-		int id = 0;
 		String content = "";
 		ArrayList<String> list = new ArrayList<>();
 		int num = 0;
@@ -85,7 +82,6 @@ public class TFIDF {
 		HashMap<String,Double> map = new HashMap<>();
 		HashMap<String,Double> tfmap = new HashMap<>();
 		try{
-			id = rs.getInt("Id");
 			content = rs.getString("user_content");
 			Analyzer analyzer = new PaodingAnalyzer();
 			StringReader reader = new StringReader(content);
@@ -123,7 +119,6 @@ public class TFIDF {
 		try {
 			int total_num = 0;
 			double num = 0.0;
-			double sum = 0.0;
 			int id = 0;
 			Double idf = 0.0;
 			String sql = "select * from lbs_sample";
@@ -254,8 +249,6 @@ public class TFIDF {
 	}
 	
 	public static HashMap<String,Double> tfidf(ResultSet rs, HashMap<String,Double> tfmap, int total_num) throws Exception{
-		int id = 0;
-		String tf;
 		HashMap<String,Double> tfidfmap = new HashMap<>();
 		HashMap<String,Double> idfmap = new HashMap<>();
 		

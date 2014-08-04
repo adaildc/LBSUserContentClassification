@@ -1,7 +1,6 @@
 package struct;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ClassCenterThreshold {
 	private String cclass;

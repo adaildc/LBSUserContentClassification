@@ -68,11 +68,10 @@ public class Participle {
 	}
 	
     public static void main(String[] args) throws Exception {
-		Participle participle = new Participle();
         Analyzer analyzer = new PaodingAnalyzer(); 
         String  indexStr = "我的QQ号码是24号楼，他的QQ号码是23号楼，我累个擦的擦"; 
         StringReader reader = new StringReader(indexStr); 
         TokenStream ts = analyzer.tokenStream(indexStr, reader); 
-        ArrayList<String> list = participle.displayTokenStream(ts);
+        ArrayList<String> list = Participle.displayTokenStream(ts);
     } 
 } 

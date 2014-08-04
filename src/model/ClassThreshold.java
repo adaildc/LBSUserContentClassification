@@ -10,12 +10,10 @@ import java.util.Iterator;
 import struct.ClassCenterThreshold;
 
 public class ClassThreshold {
-	public static ArrayList<ClassCenterThreshold> getClassCenterThreshold(ResultSet rs, ArrayList<String> viawList) throws Exception {
+	public static void getClassCenterThreshold(ResultSet rs, ArrayList<String> viawList) throws Exception {
 		ArrayList<ClassCenterThreshold> centhr = new ArrayList<>();
 		FileWriter writer = null;
 		BufferedWriter bw = null;
-		FileWriter writer1 = null;
-		BufferedWriter bw1 = null;
 		
 		try {
 			String cclass = "";
@@ -111,11 +109,7 @@ public class ClassThreshold {
 		} finally{
 			bw.close();
 			writer.close();
-			bw1.close();
-			writer1.close();
 		}
-		
-		return centhr;
 	}
 	
 	public static ArrayList<Double> getVector(HashMap<String, Double> tfidf, ArrayList<String> viawList) throws Exception {
