@@ -105,11 +105,6 @@ public class ClassThreshold {
 				System.out.println(cct.getCclass() + "         " + cct.getThreshold() + "\r\n");
 				bw.write(cct.getCclass() + "    " + tcenter + "    " + cct.getThreshold() + "\r\n");
 			}
-			writer1 = new FileWriter("vectorItemsAndWeight.txt");
-			bw1 = new BufferedWriter(writer1);
-			for(int i=0;i<viawList.size();i++){
-				bw1.write(viawList.get(i) + "    " + "\r\n");
-			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
