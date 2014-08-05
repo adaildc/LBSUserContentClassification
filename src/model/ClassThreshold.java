@@ -18,9 +18,9 @@ public class ClassThreshold {
 		try {
 			String cclass = "";
 			String tfidf = "";
+			String key = "";
 			HashMap<String, Double> tfidfmap = new HashMap<>();
 			HashMap<String, ArrayList<HashMap<String, Double>>> hashmap = new HashMap<>();
-			double distance = 0.0;
 			
 			while(rs.next()){
 				cclass = rs.getString("class");
@@ -38,10 +38,13 @@ public class ClassThreshold {
 				}
 			}
 			
+			writer = new FileWriter("class.txt");
+			bw = new BufferedWriter(writer);
 			Iterator<String> it = hashmap.keySet().iterator();
 			while(it.hasNext()){
 				//一次循环是对一个类别进行中心和半径的计算
-				double max = 0.0;
+				double min = 0.0;
+				double distance = 0.0;
 				ArrayList<ArrayList<Double>> points = new ArrayList<>();
 				cclass = it.next();
 				ArrayList<HashMap<String, Double>> details = hashmap.get(cclass);
@@ -50,58 +53,25 @@ public class ClassThreshold {
 				}
 				ArrayList<Double> center = getCenter(points);
 				
-				for(int i=0;i<points.size();i++){
-					
-					distance = getDistance(center, points.get(i));
-					if(max < distance){
-						max = distance;
-					}
-				}
-				
-				System.out.print(cclass+"  ");
-				System.out.println("  "+max);
-				
-				centhr.add(new ClassCenterThreshold(cclass, center, 0.0, max));
-			}
-			System.out.println(" 类别中心和半径计算OK !");
-			//上面只是半径，还不是阈值范围，接下来计算阈值范围
-			int csize = centhr.size();
-			double pdistance = 0.0;
-			double ts = 0.0;
-			writer = new FileWriter("class.txt");
-			bw = new BufferedWriter(writer);
-			
-			for(int i=0;i<csize;i++){
-				double threshold = -10.0;
-				for(int j=0;j<csize;j++){
-					if(threshold == 0.0){
-						break;
-					}
-					if(j != i){
-						pdistance = getDistance(centhr.get(i).getCenter(), centhr.get(j).getCenter());
-						ts = pdistance - centhr.get(j).getMax();
-						System.out.print(centhr.get(i).getCclass()+"和"+centhr.get(j).getCclass()+"的距离是：");
-						System.out.println(pdistance);
-						System.out.println("ts:"+ts);
-						if(ts < 0.0){
-							ts = 0.0;
-						}
-						if(threshold == -10.0 || threshold > ts){
-							threshold = ts;
+				Iterator<String> it1 = hashmap.keySet().iterator();
+				ArrayList<Double> point = null;
+				ArrayList<HashMap<String, Double>> details1 = null;
+				while(it1.hasNext()){
+					key = it1.next();
+					if(!key.equals(cclass)){
+						details1 = hashmap.get(cclass);
+						for(int i=0;i<details1.size();i++){
+							point = getVector(details1.get(i),viawList);
+							distance = getDistance(center, point);
+							if(min == 0.0 || distance < min){
+								min = distance;
+							}
 						}
 					}
-					System.out.println("threshold："+threshold);
 				}
-				
-				ClassCenterThreshold cct = centhr.get(i);
-				if(threshold < 0.0){
-					threshold = 0.0;
-				}
-				cct.setThreshold(threshold);
-				centhr.set(i,cct);
-				ArrayList<Double> tcenter = cct.getCenter();
-				System.out.println(cct.getCclass() + "         " + cct.getThreshold() + "\r\n");
-				bw.write(cct.getCclass() + "    " + tcenter + "    " + cct.getThreshold() + "\r\n");
+				bw.write( cclass + "    " + center + "    " +min + "\r\n");
+				ClassCenterThreshold cct = new ClassCenterThreshold(cclass, center, min);
+				centhr.add(cct);
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
