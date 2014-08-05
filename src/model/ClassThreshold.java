@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import struct.ClassCenterThreshold;
+import util.Share;
 
 public class ClassThreshold {
 	public static void getClassCenterThreshold(ResultSet rs, ArrayList<String> viawList) throws Exception {
@@ -49,7 +50,7 @@ public class ClassThreshold {
 				cclass = it.next();
 				ArrayList<HashMap<String, Double>> details = hashmap.get(cclass);
 				for(int i=0;i<details.size();i++){
-					points.add(getVector(details.get(i),viawList));
+					points.add(Share.getVector(details.get(i),viawList));
 				}
 				ArrayList<Double> center = getCenter(points);
 				
@@ -61,7 +62,7 @@ public class ClassThreshold {
 					if(!key.equals(cclass)){
 						details1 = hashmap.get(cclass);
 						for(int i=0;i<details1.size();i++){
-							point = getVector(details1.get(i),viawList);
+							point = Share.getVector(details1.get(i),viawList);
 							distance = getDistance(center, point);
 							if(min == 0.0 || distance < min){
 								min = distance;
@@ -80,25 +81,6 @@ public class ClassThreshold {
 			bw.close();
 			writer.close();
 		}
-	}
-	
-	public static ArrayList<Double> getVector(HashMap<String, Double> tfidf, ArrayList<String> viawList) throws Exception {
-		ArrayList<Double> vector = new ArrayList<>();
-		try {
-			String item = "";
-			for(int i=0;i<viawList.size();i++){
-				item = viawList.get(i);
-				if(tfidf.containsKey(item)){
-					vector.add(tfidf.get(item));
-				}else{
-					vector.add(0.0);
-				}
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return vector;
 	}
 	
 	public static ArrayList<Double> getCenter(ArrayList<ArrayList<Double>> points) throws Exception {
