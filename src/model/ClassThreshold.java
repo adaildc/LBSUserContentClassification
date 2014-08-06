@@ -63,7 +63,7 @@ public class ClassThreshold {
 						details1 = hashmap.get(cclass);
 						for(int i=0;i<details1.size();i++){
 							point = Share.getVector(details1.get(i),viawList);
-							distance = getDistance(center, point);
+							distance = Share.getDistance(center, point);
 							if(min == 0.0 || distance < min){
 								min = distance;
 							}
@@ -103,27 +103,4 @@ public class ClassThreshold {
 		}
 		return sum;
 	}
-	
-	public static double getDistance(ArrayList<Double> center, ArrayList<Double> point) throws Exception {
-		double distance = 0.0;
-		double sum = 0.0;
-		
-		try {
-			if(center.size() != point.size()){
-				return -100.0;
-			}
-			
-			int num = center.size();
-			for(int i=0;i<num;i++){
-				sum = sum + Math.pow(center.get(i) - point.get(i),2);
-			}
-			distance = Math.sqrt(sum);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return distance;
-	}
-	
 }
