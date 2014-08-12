@@ -2,16 +2,16 @@ package struct;
 
 import java.util.ArrayList;
 
-public class ClassCenterThreshold {
+public class ClassThreshold {
 	private String cclass;
 	private ArrayList<Double> center;
 	private double threshold;
 	
-	public ClassCenterThreshold(){
+	public ClassThreshold(){
 		
 	}
 	
-	public ClassCenterThreshold(String cclass, ArrayList<Double> center, double threshold){
+	public ClassThreshold(String cclass, ArrayList<Double> center, double threshold){
 		this.cclass = cclass;
 		this.center = center;
 		this.threshold = threshold;

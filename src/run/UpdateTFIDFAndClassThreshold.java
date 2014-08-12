@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import util.ReadFromSQL;
 import util.SQLInit;
+import model.GetClassThreshold;
 import model.TFIDF;
 
 public class UpdateTFIDFAndClassThreshold {
@@ -18,15 +19,18 @@ public class UpdateTFIDFAndClassThreshold {
 		int total_num = 0;
 
 		try {
-			String sql = "select count(*) from lbs_sample";
+			String sql = "select * from lbs_sample";
 			SQLInit.initParam("mysql.properties");
 			conn = SQLInit.getConn();
 			rs = ReadFromSQL.query(sql,conn);
-			total_num = rs.getInt(1);
-			System.out.println(total_num);
+			rs.last();
+			total_num = rs.getRow();
 			ArrayList<String> viawList = TFIDF.toTFtoIDF();
 			TFIDF.toTFIDF(total_num);
 			
+			rs.beforeFirst();
+			GetClassThreshold.getClassThreshold(rs, conn, viawList, 10);
+			System.out.println("准备阶段完成！");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
