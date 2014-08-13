@@ -9,6 +9,8 @@ public class ClearTable {
 		try{
 			PreparedStatement pstmt = conn.prepareStatement("truncate table lbs2");
 			pstmt.executeUpdate();
+			pstmt = conn.prepareStatement("truncate table lbs1");
+			pstmt.executeUpdate();
 		}catch(SQLException e){
 			e.printStackTrace();
 		}

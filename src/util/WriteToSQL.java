@@ -29,4 +29,16 @@ public class WriteToSQL{
 			e.printStackTrace();
 		}
 	}
+	
+	public static void write(String sql, Connection conn, int id, String user_content, Date date) throws Exception{
+		try{
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, id);
+			pstmt.setString(2, user_content);
+			pstmt.setDate(3, date);
+			pstmt.executeUpdate();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
 }
