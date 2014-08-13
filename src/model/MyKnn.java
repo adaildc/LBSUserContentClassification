@@ -90,7 +90,7 @@ public class MyKnn {
 	}
 	
 	public static ArrayList<ClassThreshold> getKNearestPoint(ArrayList<Double> point, ArrayList<ClassThreshold> samples) throws Exception{
-		ArrayList<ClassThreshold> points = null;
+		ArrayList<ClassThreshold> points = new ArrayList<>();
 		double distance = 0.0;
 		try {
 			ClassThreshold ctp = null;

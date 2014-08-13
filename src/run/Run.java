@@ -30,7 +30,7 @@ public class Run {
 			String sql = "select * from lbs";
 			String num_sql = "select * from lbs_sample";
 			String write_class_sql = "insert into lbs2 (Id, class, user_content, date) values (?,?,?,?)";
-			String write_abnormal_sql = "insert into lbs2 (Id, class, user_content, date) values (?,?,?,?)";
+			String write_abnormal_sql = "insert into lbs1 (Id, user_content, date) values (?,?,?)";
 			SQLInit.initParam("mysql.properties");
 			conn = SQLInit.getConn();
 			
