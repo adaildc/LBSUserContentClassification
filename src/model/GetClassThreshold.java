@@ -99,8 +99,8 @@ public class GetClassThreshold {
 					point = pit.next();
 					id = point.getId();
 					distance = getKNearestDistance(k, point.getPoint(), points);
-					if(distance < 0.5){
-						distance = 0.5;
+					if(distance < 0.1){
+						distance = 0.1;
 					}
 					WriteToSQL.write(sql, conn, ""+distance, id);
 				}

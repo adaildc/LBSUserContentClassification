@@ -5,7 +5,10 @@ import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -27,6 +30,10 @@ public class Run {
 		
 		
 		try{
+			SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date sd = new Date();
+			String start = time.format(sd);
+			System.out.println("开始时间为：" + start);
 			String sql = "select * from lbs";
 			String num_sql = "select * from lbs_sample";
 			String write_class_sql = "insert into lbs2 (Id, class, user_content, date) values (?,?,?,?)";
@@ -58,14 +65,27 @@ public class Run {
 			
 			rs = ReadFromSQL.query(sql,conn);
 			ClearTable.clearTable(conn);
-			int sum = 0;
+			int sum1 = 0;
+			int sum2 = 0;
 			while(rs.next()){
 				String sss = MyKnn.runMyKnn(rs, total_num, write_class_sql, write_abnormal_sql, conn, samples, viawList);
 				if(!sss.equals("")){
-					sum++;
+					sum1++;
+				}else{
+					sum2++;
 				}
 			}
-			System.out.print(sum);
+			Date ed = new Date();
+			String end = time.format(ed);
+			Calendar ca1 = Calendar.getInstance();
+			Calendar ca2 = Calendar.getInstance();
+			ca1.setTime(sd);
+			ca2.setTime(ed);
+			int distanceMin = ca2.get(Calendar.MINUTE) - ca1.get(Calendar.MINUTE);
+			System.out.println("完成，时间为：" + end);
+			System.out.println("分类所花时长：" + distanceMin);
+			System.out.println("分类结果个数：" + sum1);
+			System.out.println("离群点个数：" + sum2);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

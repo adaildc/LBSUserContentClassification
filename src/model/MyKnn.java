@@ -40,7 +40,7 @@ public class MyKnn {
 				}
 				
 			}else{
-				System.out.println(user_content);
+				//System.out.println(user_content);
 				//这里说明用户发送了没有价值的信息，反馈用户重新输入
 			}
 			
@@ -61,7 +61,7 @@ public class MyKnn {
 			int num = points.size();
 			int max = 0;
 			int value = 0;
-			if(num > 10){
+			if(num > 3){
 				for(int i=0;i<num;i++){
 					ClassThreshold ct = points.get(i);
 					cc = ct.getCclass();
