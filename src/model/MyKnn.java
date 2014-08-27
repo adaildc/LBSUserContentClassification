@@ -55,20 +55,22 @@ public class MyKnn {
 		String cclass = "";
 		try {
 			ArrayList<ClassThreshold> points = getKNearestPoint(point, samples);
-			HashMap<String, Integer> hashmap = new HashMap<>();
+			HashMap<String, Double> hashmap = new HashMap<>();
 			String cc = "";
 			String key = "";
+			double wt = 0.0;
 			int num = points.size();
-			int max = 0;
-			int value = 0;
+			double max = 0;
+			double value = 0;
 			if(num > 3){
 				for(int i=0;i<num;i++){
 					ClassThreshold ct = points.get(i);
 					cc = ct.getCclass();
+					wt = ct.getWeight();
 					if(hashmap.containsKey(cc)){
-						hashmap.put(cc, hashmap.get(cc) + 1);
+						hashmap.put(cc, hashmap.get(cc) + wt);
 					}else{
-						hashmap.put(cc, 1);
+						hashmap.put(cc, wt);
 					}
 				}
 				Iterator<String> it = hashmap.keySet().iterator();
@@ -100,20 +102,21 @@ public class MyKnn {
 				ctp = it.next();
 				ArrayList<Double> p = ctp.getPoint();
 				double ts = ctp.getThreshold();
+				double wt = ctp.getWeight();
 				distance = Share.getDistance(point, ctp.getPoint());
 				num = points.size();
 				if(distance <= ts){
 					if(num == 0){
-						ClassThreshold ct = new ClassThreshold(ctp.getCclass(), p, distance);
+						ClassThreshold ct = new ClassThreshold(ctp.getCclass(), p, distance, wt);
 						points.add(ct);
 					}else{
 						if(distance >= points.get(num-1).getThreshold()){
-							ClassThreshold ct = new ClassThreshold(ctp.getCclass(), p, distance);
+							ClassThreshold ct = new ClassThreshold(ctp.getCclass(), p, distance, wt);
 							points.add(num, ct);
 						}else{
 							for(int i=0;i<num;i++){
 								if(distance <= points.get(i).getThreshold()){
-									ClassThreshold ct = new ClassThreshold(ctp.getCclass(), p, distance);
+									ClassThreshold ct = new ClassThreshold(ctp.getCclass(), p, distance, wt);
 									points.add(i, ct);
 									break;
 								}

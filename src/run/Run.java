@@ -58,7 +58,9 @@ public class Run {
 				ArrayList<Double> point = Share.getVector(tfidfmap, viawList);
 				String k_distance = rs.getString("k_distance");
 				double kd = Double.parseDouble(k_distance);
-				ClassThreshold ct = new ClassThreshold(cclass, point, kd);
+				String weight = rs.getString("weight");
+				double wt = Double.parseDouble(weight);
+				ClassThreshold ct = new ClassThreshold(cclass, point, kd, wt);
 				samples.add(ct);
 			}
 			int total_num = rs.getRow();

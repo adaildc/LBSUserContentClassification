@@ -29,7 +29,7 @@ public class UpdateTFIDFAndClassThreshold {
 			TFIDF.toTFIDF(total_num);
 			
 			rs.beforeFirst();
-			GetClassThreshold.getClassThreshold(rs, conn, viawList, 5);
+			GetClassThreshold.getClassThreshold(rs, conn, viawList, 20);
 			System.out.println("准备阶段完成！");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
